@@ -26,7 +26,14 @@ int main() {
     size_t seed = 1234567890;
     boost::random::mt19937 engine(seed);
 
-    boost::random::gamma_distribution<> gamma_dist(a, b);
+    boost::random::gamma_distribution<> dist_gamma(a, b);
+    boost::function<double()> randdata = boost::bind(dist_gamma, engine);
+    for (size_t n = 0;n < 100;++n) {
+        // 実際にベルヌーイ分布から乱数生成
+        double result = randdata();
+        data[n] = result;
+        cout << result << endl;
+    }
 
-    
+
 }
