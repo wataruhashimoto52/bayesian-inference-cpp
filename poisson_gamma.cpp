@@ -20,6 +20,7 @@ int main() {
     int a = 1;
     int b = 1;
     int N = 100;
+    int pred_lambda;
     int data[N];
     double randFromUnif;
 
@@ -29,11 +30,17 @@ int main() {
     boost::random::gamma_distribution<> dist_gamma(a, b);
     boost::function<double()> randdata = boost::bind(dist_gamma, engine);
     for (size_t n = 0;n < 100;++n) {
-        // 実際にベルヌーイ分布から乱数生成
         double result = randdata();
         data[n] = result;
         cout << result << endl;
     }
+    // pred_lambda = ~
 
+    boost::random::poisson_distribution<> dist_pois(pred_lambda);
+    boost::function<int()> randpost = boost::bind(dist_pois, engine);
+    ofstream posterior_file("posterior_poissongamma.txt");
 
+    for (size_t n = 0;n < 1000;++n) {
+        posterior_file << randpost() << '\t';
+    }
 }
