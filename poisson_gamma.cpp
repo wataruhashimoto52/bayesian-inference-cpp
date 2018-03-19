@@ -21,7 +21,8 @@ int main() {
     int b = 1;
     int N = 100;
     int lamb = 4;
-    int pred_a, pred_b;
+    int pred_a;
+    double pred_b;
     int data[N];
     double randFromUnif;
 
@@ -36,7 +37,7 @@ int main() {
         cout << result << endl;
     }
     pred_a = arraySum(data, N) + a;
-    pred_b = N + b;
+    pred_b = 1 / (double) (N + b);
 
     boost::random::gamma_distribution<> dist_gamma(pred_a, pred_b);
     boost::function<double()> randpost = boost::bind(dist_gamma, engine);
