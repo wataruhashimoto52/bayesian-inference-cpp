@@ -20,24 +20,26 @@ int main() {
     int a = 1;
     int b = 1;
     int N = 100;
-    int pred_lambda;
+    int lamb = 4;
+    int pred_a, pred_b;
     int data[N];
     double randFromUnif;
 
     size_t seed = 1234567890;
     boost::random::mt19937 engine(seed);
 
-    boost::random::gamma_distribution<> dist_gamma(a, b);
-    boost::function<double()> randdata = boost::bind(dist_gamma, engine);
+    boost::random::poisson_distribution<> dist_pois(lamb);
+    boost::function<int()> randdata = boost::bind(dist_pois, engine);
     for (size_t n = 0;n < 100;++n) {
-        double result = randdata();
+        int result = randdata();
         data[n] = result;
         cout << result << endl;
     }
-    // pred_lambda = ~
+    pred_a = arraySum(data, N) + a;
+    pred_b = N + b;
 
-    boost::random::poisson_distribution<> dist_pois(pred_lambda);
-    boost::function<int()> randpost = boost::bind(dist_pois, engine);
+    boost::random::gamma_distribution<> dist_gamma(pred_a, pred_b);
+    boost::function<double()> randpost = boost::bind(dist_gamma, engine);
     ofstream posterior_file("posterior_poissongamma.txt");
 
     for (size_t n = 0;n < 1000;++n) {
